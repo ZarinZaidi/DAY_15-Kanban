@@ -26,10 +26,10 @@
 export default {
     name: 'TaskModal',
     props: {
-        task: Object,
+        task: Object, // Task object to be edited (null for adding a new task)
     },
     data() {
-        return {
+        return { // Initialize form fields with task data (or empty strings for a new task)
             title: this.task ? this.task.title : '',
             description: this.task ? this.task.description : '',
             dueDate: this.task ? this.task.dueDate : '',
@@ -38,12 +38,13 @@ export default {
     methods: {
         submitTask() {
             const task = {
-                id: this.task ? this.task.id : Date.now(),
+                id: this.task ? this.task.id : Date.now(), // Generate a new ID for a new task, or use the existing ID for editing
                 title: this.title,
                 description: this.description,
                 dueDate: this.dueDate,
             };
             this.$emit('save', task);
+            // Reset the form fields
             this.title = '';
             this.description = '';
             this.dueDate = '';

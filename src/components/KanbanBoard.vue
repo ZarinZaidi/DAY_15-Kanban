@@ -1,6 +1,8 @@
 <template>
     <div class="kanban-board">
+        <!-- Draggable component to handle drag-and-drop functionality for columns -->
         <draggable v-model="columns" group="columns" @end="updateColumns" class="columns">
+            <!-- TaskColumn component for each column -->
             <template #item="{ element }">
                 <TaskColumn :column="element" @edit-task="showEditModal" @delete-task="deleteTask" />
             </template>
@@ -26,29 +28,29 @@ export default {
     },
     data() {
         return {
-            showModal: false,
-            showEditModalFlag: false,
-            editingTask: null,
-            editingColumnId: null,
+            showModal: false, // Flag to show/hide the modal for adding a task
+            showEditModalFlag: false, // Flag to show/hide the modal for editing a task
+            editingTask: null, // Holds the task being edited
+            editingColumnId: null, // Holds the column ID of the task being edited
         };
     },
     computed: {
-        ...mapState(['columns']),
+        ...mapState(['columns']), // Maps the columns state from the Vuex store
     },
     methods: {
-        addTask(task) {
+        addTask(task) { //Adds a new task to the first column.
             this.$store.commit('addTask', { columnId: 1, task });
             this.showModal = false;
         },
-        updateColumns() {
+        updateColumns() { //Updates the columns in the Vuex store after drag-and-drop.
             this.$store.commit('updateColumns', this.columns);
         },
-        showEditModal(task, columnId) {
+        showEditModal(task, columnId) { //Shows the edit modal with the selected task details.
             this.editingTask = { ...task };
             this.editingColumnId = columnId;
             this.showEditModalFlag = true;
         },
-        editTask(updatedTask) {
+        editTask(updatedTask) { //Edits the task in the Vuex store.
             this.$store.commit('editTask', {
                 columnId: this.editingColumnId,
                 taskId: this.editingTask.id,
@@ -56,7 +58,7 @@ export default {
             });
             this.showEditModalFlag = false;
         },
-        deleteTask(taskId, columnId) {
+        deleteTask(taskId, columnId) { //Deletes the task from the specified column.
             this.$store.commit('deleteTask', { columnId, taskId });
         },
     },
@@ -64,6 +66,7 @@ export default {
 </script>
 
 <style scoped>
+/* Scoped styles for the KanbanBoard component */
 .kanban-board {
     display: flex;
     flex-direction: column;

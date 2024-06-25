@@ -12,7 +12,7 @@
 export default {
     name: 'TaskCard',
     props: {
-        task: Object,
+        task: Object, // Task object passed as a prop to the component
     },
     methods: {
         editTask() {
